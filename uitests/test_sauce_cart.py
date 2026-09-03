@@ -29,5 +29,7 @@ def test_add_to_cart(idx):
         assert page.locator(".shopping_cart_badge").inner_text() == "1"
 
         # 作业2：加一行 Allure 截图（截"加购后"页面）
-        # allure.attach(page.screenshot(), name=..., attachment_type=allure.attachment_type.PNG)
+        allure.attach(page.screenshot(),
+                      name=f"加购第{idx}个商品后",
+                      attachment_type=allure.attachment_type.PNG)
         browser.close()
