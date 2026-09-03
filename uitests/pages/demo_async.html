@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>异步加载演示 - 慢页面教材</title>
+<style>
+  body { font-family: "Microsoft YaHei", sans-serif; max-width: 420px; margin: 40px auto; }
+  button { padding: 8px 24px; cursor: pointer; }
+  #result { margin-top: 18px; padding: 10px; background: #eef4ff; border-radius: 6px; min-height: 22px; }
+</style>
+</head>
+<body>
+<h1>异步加载演示</h1>
+<input placeholder="输入你的大名">
+<button id="loadBtn">开始加载</button>
+<div id="result">（还没有内容）</div>
+
+<script>
+document.getElementById('loadBtn').addEventListener('click', function () {
+  // 模拟"慢服务器"：等 2 秒后才把结果写进页面
+  setTimeout(function () {
+    var name = document.querySelector('input').value || '匿名';
+    document.getElementById('result').innerText = '加载完成：' + name;
+  }, 2000);
+});
+</script>
+</body>
+</html>

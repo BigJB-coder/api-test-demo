@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>练习表单页 - UI自动化测试教材</title>
+<style>
+  body { font-family: "Microsoft YaHei", sans-serif; max-width: 420px; margin: 40px auto; }
+  label { display: block; margin: 14px 0; }
+  input, select { padding: 6px; width: 100%; box-sizing: border-box; }
+  input[type=checkbox] { width: auto; margin-right: 6px; }
+  button { padding: 8px 28px; margin-top: 10px; cursor: pointer; }
+  #result { margin-top: 18px; padding: 10px; background: #e8f7e8; border-radius: 6px; min-height: 20px; }
+</style>
+</head>
+<body>
+<h1>联系信息登记</h1>
+<form id="myform">
+  <label>姓名 <input type="text" id="name" placeholder="你的名字"></label>
+  <label>邮箱 <input type="email" id="email" placeholder="you@example.com"></label>
+  <label>意向城市
+    <select id="city">
+      <option value="深圳">深圳</option>
+      <option value="广州">广州</option>
+      <option value="上海">上海</option>
+    </select>
+  </label>
+  <label><input type="checkbox" id="agree"> 我同意接收招聘信息</label>
+  <button type="submit">提交</button>
+</form>
+<div id="result"></div>
+
+<script>
+document.getElementById('myform').addEventListener('submit', function (e) {
+  e.preventDefault();
+  var name = document.getElementById('name').value;
+  var city = document.getElementById('city').value;
+  var agree = document.getElementById('agree').checked;
+  document.getElementById('result').innerText =
+    '提交成功：' + name + '，' + city + '，同意=' + agree;
+});
+</script>
+</body>
+</html>
