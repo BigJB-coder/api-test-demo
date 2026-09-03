@@ -1,0 +1,57 @@
+# 给 GitHub 的"免费机器人"下的任务单
+# 什么时候干活（on）、干什么活（jobs、steps）都写在这里
+
+name: API Test CI
+
+on:
+  push:                # ① 每次代码推送到 main 分支 → 跑一次
+    branches: [ main ]
+  schedule:            # ② 每天 9:00（UTC 时间）→ 定时回归，不碰代码也跑
+    - cron: "0 9 * * *"
+  workflow_dispatch: {} # ③ 在 Actions 页面可以手动点按钮跑
+
+jobs:
+  test:
+    runs-on: ubuntu-latest   # 机器人用的系统
+    steps:
+      - name: 拉取代码
+        uses: actions/checkout@v4
+
+      - name: 安装 Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: 安装依赖
+        run: pip install -r requirements.txt
+
+      - name: 跑测试（生成 Allure 原始数据）
+        run: python -m pytest --alluredir=report/results
+
+      - name: 安装 Java（Allure 报告工具是 Java 程序）
+        run: sudo apt-get update && sudo apt-get install -y default-jre-headless
+
+      - name: 安装 Allure 报告工具
+        run: |
+          curl -L -o /tmp/allure.tgz \
+            https://github.com/allure-framework/allure2/releases/download/2.30.0/allure-2.30.0.tgz
+          tar -xzf /tmp/allure.tgz -C /tmp
+          sudo ln -sf /tmp/allure-2.30.0/bin/allure /usr/local/bin/allure
+
+      - name: 生成 Allure 网页报告
+        if: always()          # 哪怕测试有失败，报告也要生成
+        run: allure generate report/results -o report/html --clean
+
+      - name: 上传网页报告（可在 Actions 页面下载）
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-report
+          path: report/html
+
+      - name: 上传原始结果
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results
+          path: report/results
