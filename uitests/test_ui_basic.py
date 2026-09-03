@@ -10,6 +10,7 @@
 from pathlib import Path
 
 from playwright.sync_api import sync_playwright
+from common import launch_kwargs
 
 # 练习页的"网址"（本地文件，用 file:// 方式打开）
 PAGES = Path(__file__).parent / "pages"
@@ -23,7 +24,7 @@ def test_form_submit():
     """
     with sync_playwright() as p:
         # 用你电脑上的 Chrome 打开浏览器（channel="chrome" 免下载）
-        browser = p.chromium.launch(channel="chrome")
+        browser = p.chromium.launch(**launch_kwargs())
         page = browser.new_page()
 
         # ① 打开练习页（相当于在地址栏输入网址回车）
@@ -45,7 +46,7 @@ def test_form_submit():
 def test_form_required_check():
     """不勾"同意"，页面也会显示提交结果里 同意=false —— 验证勾选状态被记录。"""
     with sync_playwright() as p:
-        browser = p.chromium.launch(channel="chrome")
+        browser = p.chromium.launch(**launch_kwargs())
         page = browser.new_page()
         page.goto(FORM_URI)
         page.get_by_label("姓名").fill("小明")

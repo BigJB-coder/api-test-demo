@@ -12,6 +12,7 @@ Playwright 的两个救命工具：
 from pathlib import Path
 
 from playwright.sync_api import sync_playwright
+from common import launch_kwargs
 
 PAGES = Path(__file__).parent / "pages"
 ASYNC_URI = PAGES.joinpath("demo_async.html").as_uri()
@@ -20,7 +21,7 @@ ASYNC_URI = PAGES.joinpath("demo_async.html").as_uri()
 def test_wait_async_result():
     """点按钮 → 2 秒后才有结果 → 用 wait_for 等它出现再断言。"""
     with sync_playwright() as p:
-        browser = p.chromium.launch(channel="chrome")
+        browser = p.chromium.launch(**launch_kwargs())
         page = browser.new_page()
         page.goto(ASYNC_URI)
 
@@ -37,7 +38,7 @@ def test_wait_async_result():
 def test_placeholder_and_result():
     """进阶定位：get_by_placeholder 按"提示文字"找输入框。"""
     with sync_playwright() as p:
-        browser = p.chromium.launch(channel="chrome")
+        browser = p.chromium.launch(**launch_kwargs())
         page = browser.new_page()
         page.goto(ASYNC_URI)
 

@@ -1,12 +1,13 @@
 from pathlib import Path
 from playwright.sync_api import sync_playwright
+from common import launch_kwargs
 
 PAGES = Path(__file__).parent / "pages"
 FORM_URI = PAGES.joinpath("demo_form.html").as_uri()
 
 def test_hw1():
     with sync_playwright() as p:              # ← 固定写法：打开浏览器工厂
-        browser = p.chromium.launch(channel="chrome")   # ← 打开 Chrome
+        browser = p.chromium.launch(**launch_kwargs())   # ← 打开 Chrome
         page = browser.new_page()                        # ← 新开一个标签页
         page.goto(FORM_URI)                              # ← ① 打开练习页
 
@@ -23,7 +24,7 @@ def test_hw1():
 
 def test_hw2():
     with sync_playwright() as p:              # ← 固定写法：打开浏览器工厂
-        browser = p.chromium.launch(channel="chrome")   # ← 打开 Chrome
+        browser = p.chromium.launch(**launch_kwargs())   # ← 打开 Chrome
         page = browser.new_page()                        # ← 新开一个标签页
         page.goto(FORM_URI)                              # ← ① 打开练习页
         page.get_by_label("姓名").fill("狗蛋")
@@ -34,7 +35,7 @@ def test_hw2():
 
 def test_hw3():
     with sync_playwright() as p:              # ← 固定写法：打开浏览器工厂
-        browser = p.chromium.launch(channel="chrome")   # ← 打开 Chrome
+        browser = p.chromium.launch(**launch_kwargs())   # ← 打开 Chrome
         page = browser.new_page()                        # ← 新开一个标签页
         page.goto(FORM_URI)                              # ← ① 打开练习页
         page.get_by_role("button", name="提交").click()

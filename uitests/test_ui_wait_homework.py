@@ -1,6 +1,7 @@
 """第2课作业：等待 + 定位练习"""
 from pathlib import Path
 from playwright.sync_api import sync_playwright
+from common import launch_kwargs
 
 PAGES = Path(__file__).parent / "pages"
 ASYNC_URI = PAGES.joinpath("demo_async.html").as_uri()
@@ -11,7 +12,7 @@ MY_NAME = "牛逼"   # ← 改成你自己的（比如"阿伟"）
 def test_hw1_async_load():
     """抄示例：点按钮 → 等"加载完成" → 断言带自己的昵称。"""
     with sync_playwright() as p:
-        browser = p.chromium.launch(channel="chrome")
+        browser = p.chromium.launch(**launch_kwargs())
         page = browser.new_page()
         page.goto(ASYNC_URI)
 
@@ -26,7 +27,7 @@ def test_hw1_async_load():
 def test_hw2_before_after():
     """加载前显示占位文字，加载后被替换——一次测两个状态。"""
     with sync_playwright() as p:
-        browser = p.chromium.launch(channel="chrome")
+        browser = p.chromium.launch(**launch_kwargs())
         page = browser.new_page()
         page.goto(ASYNC_URI)
 

@@ -25,7 +25,12 @@ jobs:
       - name: 安装依赖
         run: pip install -r requirements.txt
 
-      - name: 跑测试（生成 Allure 原始数据）
+      - name: 安装 Playwright 自带浏览器（UI 测试用）
+        run: python -m playwright install --with-deps chromium
+
+      - name: 跑测试（接口 + UI，生成 Allure 原始数据）
+        env:
+          PW_BUNDLED_CHROMIUM: "1"   # CI 用自带浏览器，不用系统 Chrome
         run: python -m pytest --alluredir=report/results
 
       - name: 安装 Java（Allure 报告工具是 Java 程序）
