@@ -5,3 +5,5 @@ report/
 .venv/
 .DS_Store
 .idea/
+jmeter/result/
+jmeter/result200/
